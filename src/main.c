@@ -1,8 +1,8 @@
 #include <stdio.h>
+#include "connect4.h"
 
 int main()
 {
-    // printf() displays the string inside quotation
-    printf("Hello, World!");
+    connect4();
     return 0;
 }
