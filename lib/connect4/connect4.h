@@ -9,7 +9,9 @@
 
 struct Connect4
 {
-    // The Connect 4 board grid
+    /**
+     * @brief The Connect4 board. Tells you which tile is connected to what player or empty.
+     */
     enum Tile
     {
         empty,
@@ -17,7 +19,9 @@ struct Connect4
         player2
     } board[CONNECT4_WIDTH][CONNECT4_HEIGHT];
 
-    // Which player is in turn
+    /**
+     * @brief Which player is in turn. False is player1 and True is player2.
+     */
     bool turn;
 };
 
