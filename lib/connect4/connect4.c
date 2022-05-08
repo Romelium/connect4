@@ -1,5 +1,6 @@
 #include "connect4.h"
 #include <stdio.h>
+#include <assert.h>
 
 /**
  * @brief Prints the connect4 board on the console.
@@ -42,6 +43,9 @@ void connect4_print(const struct Connect4 *connect4)
  */
 void connect4_drop(struct Connect4 *connect4, const size_t drop_position, const bool switch_turn)
 {
+    // This stops the program from running any further and issues.
+    assert(drop_position < CONNECT4_WIDTH && "You are exceeding the number of columns in the board.");
+
     for (size_t y = 0; y < CONNECT4_HEIGHT; y++)
     {
         // Check if current tile is empty.
