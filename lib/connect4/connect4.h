@@ -21,6 +21,18 @@ struct Connect4
     bool turn;
 };
 
+/**
+ * @brief Prints the connect4 board on the console.
+ *
+ * @param connect4 The connect4 that will be printed.
+ */
 void connect4_print(const struct Connect4 *connect4);
+/**
+ * @brief Add a tile on the highest empty point at the selected row of the Connect4 struct.
+ *
+ * @param connect4 The Connect4 struct that a tile will be dropped on.
+ * @param drop_position Which row the tile will be dropped on.
+ * @param switch_turn Automatically switches the player's turn.
+ */
 void connect4_drop(struct Connect4 *connect4, const size_t drop_position, const bool switch_turn);
 #endif
