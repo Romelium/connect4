@@ -21,4 +21,5 @@ struct Connect4
     bool turn;
 };
 
+void connect4_print(const struct Connect4 *connect4);
 #endif
