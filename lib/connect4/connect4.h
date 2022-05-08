@@ -22,4 +22,5 @@ struct Connect4
 };
 
 void connect4_print(const struct Connect4 *connect4);
+void connect4_drop(struct Connect4 *connect4, const size_t drop_position, const bool switch_turn);
 #endif
