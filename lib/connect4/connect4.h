@@ -14,9 +14,9 @@ struct Connect4
      */
     enum Tile
     {
-        empty,
-        player1,
-        player2
+        tile_empty,
+        tile_player1,
+        tile_player2
     } board[CONNECT4_WIDTH][CONNECT4_HEIGHT];
 
     /**
