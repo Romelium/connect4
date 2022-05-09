@@ -39,4 +39,11 @@ void connect4_print(const struct Connect4 *connect4);
  * @param switch_turn Automatically switches the player's turn.
  */
 void connect4_drop(struct Connect4 *connect4, const size_t drop_position, const bool switch_turn);
+
+enum Winner
+{
+    winner_none,
+    winner_player1,
+    winner_player2
+} connect4_check_win(const struct Connect4 *connect4);
 #endif
