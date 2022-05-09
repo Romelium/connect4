@@ -93,7 +93,20 @@ bool connect4_check_win_player(const struct Connect4 *connect4, enum Tile player
     return false;
 }
 
-enum Winner connect4_check_win(const struct Connect4 *connect4)
+bool connect4_check_win_draw(const struct Connect4 *connect4)
+{
+    for (size_t x = 0; x < CONNECT4_WIDTH; x++)
+    {
+        if (connect4->board[x][CONNECT4_HEIGHT - 1] == tile_empty)
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+enum Winner
+connect4_check_win(const struct Connect4 *connect4)
 {
     if (connect4_check_win_player(connect4, tile_player1))
     {
@@ -102,6 +115,10 @@ enum Winner connect4_check_win(const struct Connect4 *connect4)
     else if (connect4_check_win_player(connect4, tile_player2))
     {
         return winner_player2;
+    }
+    else if (connect4_check_win_draw(connect4))
+    {
+        return winner_draw;
     }
     return winner_none;
 }

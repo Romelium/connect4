@@ -22,6 +22,9 @@ int main()
         case winner_player2:
             printf("winner: player 2!\n");
             goto end;
+        case winner_draw:
+            printf("DRAW!\n");
+            goto end;
         }
     }
 end:

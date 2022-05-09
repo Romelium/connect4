@@ -44,6 +44,7 @@ enum Winner
 {
     winner_none,
     winner_player1,
-    winner_player2
+    winner_player2,
+    winner_draw,
 } connect4_check_win(const struct Connect4 *connect4);
 #endif
