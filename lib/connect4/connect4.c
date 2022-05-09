@@ -1,6 +1,7 @@
 #include "connect4.h"
 #include <stdio.h>
 #include <assert.h>
+#include <limits.h>
 
 void connect4_print(const struct Connect4 *connect4)
 {
@@ -121,4 +122,70 @@ connect4_check_win(const struct Connect4 *connect4)
         return winner_draw;
     }
     return winner_none;
+}
+
+int search(const struct Connect4 *connect4, const size_t depth)
+{
+    switch (connect4_check_win(connect4))
+    {
+    case winner_player1:
+        return 1;
+    case winner_player2:
+        return -1;
+    case winner_draw:
+        return 0;
+    }
+    if (depth > 0)
+    {
+        // size_t best_move = 0;                                // Which move will be output
+        int best_score = connect4->turn ? INT_MAX : INT_MIN; // The score of the best_move
+
+        for (size_t i = 0; i < CONNECT4_WIDTH; i++)
+        {
+            // Skip if the current column is filled
+            if (connect4->board[i][CONNECT4_HEIGHT - 1] != tile_empty)
+                continue;
+
+            struct Connect4 connect4_search = *connect4; // copy the connect4 struct
+            connect4_drop(&connect4_search, i, true);    // drops a tile on the copied connect4 struct
+
+            int score = search(&connect4_search, depth - 1); // search the possible moves tree for the score
+
+            if (connect4->turn && score < best_score ||
+                !connect4->turn && score > best_score)
+            {
+                best_score = score;
+                // best_move = i;
+            }
+        }
+        // return best_move;
+        return best_score;
+    }
+    return 0;
+}
+
+size_t search_best_move(const struct Connect4 *connect4, const size_t depth)
+{
+    size_t best_move = 0;                                // Which move will be output
+    int best_score = connect4->turn ? INT_MAX : INT_MIN; // The score of the best_move
+
+    for (size_t i = 0; i < CONNECT4_WIDTH; i++)
+    {
+        // Skip if the current column is filled
+        if (connect4->board[i][CONNECT4_HEIGHT - 1] != tile_empty)
+            continue;
+
+        struct Connect4 connect4_search = *connect4; // copy the connect4 struct
+        connect4_drop(&connect4_search, i, true);    // drops a tile on the copied connect4 struct
+
+        int score = search(&connect4_search, depth); // search the possible moves tree for the score
+
+        if (connect4->turn && score < best_score ||
+            !connect4->turn && score > best_score)
+        {
+            best_score = score;
+            best_move = i;
+        }
+    }
+    return best_move;
 }

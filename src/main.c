@@ -4,17 +4,23 @@
 
 int main()
 {
-    struct Connect4 connect4 = {.board = {0}, .turn = false};
+    struct Connect4 connect4 = {{0}, false};
     connect4_print(&connect4);
 
     while (1)
     {
         clock_t start = clock();
-        int input;
-        scanf("%d", &input);
-
-        connect4_drop(&connect4, input, true);
-
+        if (connect4.turn == false)
+        {
+            int input;
+            scanf("%d", &input);
+            connect4_drop(&connect4, input, true);
+        }
+        else
+        {
+            size_t input = search_best_move(&connect4, 7);
+            connect4_drop(&connect4, input, true);
+        }
         clock_t end = clock();
 
         float time_taken = (float)(end - start) / CLOCKS_PER_SEC;
