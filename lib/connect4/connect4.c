@@ -40,7 +40,7 @@ void connect4_drop(struct Connect4 *connect4, const size_t drop_position, const 
         if (connect4->board[drop_position][y] == tile_empty)
         {
             // Add current player to the current tile.
-            connect4->board[drop_position][y] = connect4->turn ? tile_player1 : tile_player2;
+            connect4->board[drop_position][y] = connect4->turn ? tile_player2 : tile_player1;
 
             // Automatically switches the player's turn.
             if (switch_turn)
