@@ -124,7 +124,7 @@ connect4_check_win(const struct Connect4 *connect4)
     return winner_none;
 }
 
-int search(const struct Connect4 *connect4, const size_t depth)
+int search(const struct Connect4 *connect4, const size_t depth, int alphabeta)
 {
     switch (connect4_check_win(connect4))
     {
@@ -149,13 +149,16 @@ int search(const struct Connect4 *connect4, const size_t depth)
             struct Connect4 connect4_search = *connect4; // copy the connect4 struct
             connect4_drop(&connect4_search, i, true);    // drops a tile on the copied connect4 struct
 
-            int score = search(&connect4_search, depth - 1); // search the possible moves tree for the score
+            int score = search(&connect4_search, depth - 1, best_score); // search the possible moves tree for the score
 
             if (connect4->turn && score < best_score ||
                 !connect4->turn && score > best_score)
             {
                 best_score = score;
                 // best_move = i;
+
+                if (!connect4->turn && alphabeta <= best_score || connect4->turn && alphabeta >= best_score)
+                    return best_score;
             }
         }
         // return best_move;
@@ -178,7 +181,7 @@ size_t search_best_move(const struct Connect4 *connect4, const size_t depth)
         struct Connect4 connect4_search = *connect4; // copy the connect4 struct
         connect4_drop(&connect4_search, i, true);    // drops a tile on the copied connect4 struct
 
-        int score = search(&connect4_search, depth); // search the possible moves tree for the score
+        int score = search(&connect4_search, depth - 1, best_score); // search the possible moves tree for the score
 
         if (connect4->turn && score < best_score ||
             !connect4->turn && score > best_score)

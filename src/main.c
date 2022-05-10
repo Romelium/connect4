@@ -18,7 +18,7 @@ int main()
         }
         else
         {
-            size_t input = search_best_move(&connect4, 7);
+            size_t input = search_best_move(&connect4, 12);
             connect4_drop(&connect4, input, true);
         }
         clock_t end = clock();

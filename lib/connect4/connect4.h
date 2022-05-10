@@ -55,7 +55,7 @@ enum Winner
  * @param connect4 Search for the current player best score.
  * @return The best score
  */
-int search(const struct Connect4 *connect4, const size_t depth);
+int search(const struct Connect4 *connect4, const size_t depth, int alphabeta);
 
 /**
  * @brief Search the possible moves tree for the best move.
