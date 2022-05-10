@@ -10,17 +10,10 @@ int main()
     while (1)
     {
         clock_t start = clock();
-        if (connect4.turn == false)
-        {
-            int input;
-            scanf("%d", &input);
-            connect4_drop(&connect4, input, true);
-        }
-        else
-        {
-            size_t input = search_best_move(&connect4, 12);
-            connect4_drop(&connect4, input, true);
-        }
+
+        size_t input = search_best_move(&connect4, 12);
+        connect4_drop(&connect4, input, true);
+
         clock_t end = clock();
 
         float time_taken = (float)(end - start) / CLOCKS_PER_SEC;
