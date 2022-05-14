@@ -124,7 +124,7 @@ connect4_check_win(const struct Connect4 *connect4)
     return winner_none;
 }
 
-int search(const struct Connect4 *connect4, const size_t depth, int alphabeta)
+int search_max(const struct Connect4 *connect4, const size_t depth, int alpha)
 {
     switch (connect4_check_win(connect4))
     {
@@ -137,8 +137,7 @@ int search(const struct Connect4 *connect4, const size_t depth, int alphabeta)
     }
     if (depth > 0)
     {
-        // size_t best_move = 0;                                // Which move will be output
-        int best_score = connect4->turn ? INT_MAX : INT_MIN; // The score of the best_move
+        int best_score = INT_MIN; // The best score of the search results
 
         for (size_t i = 0; i < CONNECT4_WIDTH; i++)
         {
@@ -149,19 +148,54 @@ int search(const struct Connect4 *connect4, const size_t depth, int alphabeta)
             struct Connect4 connect4_search = *connect4; // copy the connect4 struct
             connect4_drop(&connect4_search, i, true);    // drops a tile on the copied connect4 struct
 
-            int score = search(&connect4_search, depth - 1, best_score); // search the possible moves tree for the score
+            int score = search_min(&connect4_search, depth - 1, best_score); // search the possible moves tree for the score
 
-            if (connect4->turn && score < best_score ||
-                !connect4->turn && score > best_score)
+            if (score > best_score)
             {
                 best_score = score;
-                // best_move = i;
 
-                if (!connect4->turn && alphabeta <= best_score || connect4->turn && alphabeta >= best_score)
+                if (alpha <= best_score)
                     return best_score;
             }
         }
-        // return best_move;
+        return best_score;
+    }
+    return 0;
+}
+int search_min(const struct Connect4 *connect4, const size_t depth, int beta)
+{
+    switch (connect4_check_win(connect4))
+    {
+    case winner_player1:
+        return 1;
+    case winner_player2:
+        return -1;
+    case winner_draw:
+        return 0;
+    }
+    if (depth > 0)
+    {
+        int best_score = INT_MAX; // The best score of the search results
+
+        for (size_t i = 0; i < CONNECT4_WIDTH; i++)
+        {
+            // Skip if the current column is filled
+            if (connect4->board[i][CONNECT4_HEIGHT - 1] != tile_empty)
+                continue;
+
+            struct Connect4 connect4_search = *connect4; // copy the connect4 struct
+            connect4_drop(&connect4_search, i, true);    // drops a tile on the copied connect4 struct
+
+            int score = search_max(&connect4_search, depth - 1, best_score); // search the possible moves tree for the score
+
+            if (connect4->turn && score < best_score)
+            {
+                best_score = score;
+
+                if (beta >= best_score)
+                    return best_score;
+            }
+        }
         return best_score;
     }
     return 0;
@@ -181,7 +215,7 @@ size_t search_best_move(const struct Connect4 *connect4, const size_t depth)
         struct Connect4 connect4_search = *connect4; // copy the connect4 struct
         connect4_drop(&connect4_search, i, true);    // drops a tile on the copied connect4 struct
 
-        int score = search(&connect4_search, depth - 1, best_score); // search the possible moves tree for the score
+        int score = connect4_search.turn ? search_min(&connect4_search, depth - 1, best_score) : search_max(&connect4_search, depth - 1, best_score); // search the possible moves tree for the score
 
         if (connect4->turn && score < best_score ||
             !connect4->turn && score > best_score)
